@@ -30,10 +30,17 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.28</version>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.22</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -60,10 +67,6 @@
             <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
         </repository>
 
-        <repository>
-            <id>artifact-s3-maven</id>
-            <url>s3://artifact-s3-maven</url>
-        </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
