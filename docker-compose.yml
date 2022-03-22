@@ -1,17 +1,17 @@
 version: "3.9"  # optional since v1.27.0
 services:
-  my-app:
+  poc:
     restart: on-failure
     depends_on:
       - mysqldb
     build:
       context: .
       dockerfile: Dockerfile
-    image: my-app:1.0
+    image: poc:1.0
     ports:
       - "8080:8080"
     environment:
-      - dbUrl=jdbc:mysql://mysqldb:3306/testdb
+      - dbUrl=jdbc:mysql://mysqldb/testdb
       - userName=root
       - password=root
       - driverClass=com.mysql.jdbc.Driver
@@ -23,8 +23,8 @@ services:
     image: mysql:8.0
     command: "--default-authentication-plugin=mysql_native_password"
     restart: always
-    ports:
-      - "3306:3306"
+   # ports:
+   #  - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: testdb
