@@ -1,0 +1,30 @@
+Build image
+docker build -t poc -f devops/Dockerfile .
+
+Run image
+docker run -p 8080:8080 -e KEY_VAULT_URI=<keyVaultUri> -e CLIENT_ID=<clientId> -e CLIENT_SECRET=<clientSecret> -e TENANT_ID=<tenantId> poc
+
+To tag image
+docker tag <source:tag> <dest:tag>
+
+Push image poc to Dockerhub
+docker tag poc aparanjpe/testing => defaults to docker.io/aparanjpe/testing
+docker push aparanjpe/testing 
+//if we directly push poc then it will defaults to docker.io/library/poc which is not accessible to us.
+
+Pull image from Dockerhub
+docker pull aparanjpe/testing 
+docker tag aparanjpe/testing poc //So that we can refer poc name in the image instead of whole repo name.
+//Docker tag has to be given every time when we pull the image from the docker if we want to refer the image by tag
+
+
+To List docker images
+docker images
+
+To remove image 
+docker rmi poc  // For forceful removal add -f
+docker rmi 122d // To delete using image Id Initials
+
+To list docker containers
+docker ps -a
+
