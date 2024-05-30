@@ -4,6 +4,7 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
 public class BeanConfig {
@@ -17,13 +18,23 @@ public class BeanConfig {
     String tenantId;//
     @Bean
     public ClientSecretCredentialBuilder getClientSecretCredentialBuilder(){
-        System.out.println("keyVaultUrl:"+keyVaultUrl);
-        System.out.println("clientId:"+clientId);
-        System.out.println("clientSecret:"+clientSecret);
-        System.out.println("tenantId:"+tenantId);
        return new ClientSecretCredentialBuilder()
                 .clientId(clientId)
                 .clientSecret(clientSecret)
                 .tenantId(tenantId);
     }
+    @Bean
+    @Profile("debug")
+    public Object showServicePrincipalCredentials(){
+        System.out.println("------------------Debugging is enabled------------------");
+        System.out.println();
+        System.out.println("keyVaultUrl:"+keyVaultUrl);
+        System.out.println("clientId:"+clientId);
+        System.out.println("clientSecret:"+clientSecret);
+        System.out.println("tenantId:"+tenantId);
+        System.out.println();
+        System.out.println("--------------------------------------------------------");
+        return null;
+    }
+
 }
