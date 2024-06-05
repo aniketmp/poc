@@ -10,9 +10,6 @@
     </parent>
     <groupId>org.learning</groupId>
     <artifactId>poc</artifactId>
-    <properties>
-        <java.version>8</java.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

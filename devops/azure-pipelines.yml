@@ -1,0 +1,91 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- none
+
+pool:
+  vmImage: ubuntu-latest
+
+
+variables:
+  imageName: 'poc'
+  tag: '08-06-2024'
+  acrRegistry: 'mypocregistry123.azurecr.io'
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- task: Maven@4
+  inputs:
+    mavenPomFile: 'pom.xml'
+    mavenOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.17'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'clean package'
+
+#- task: PublishBuildArtifacts@1
+#  inputs:
+#    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#    ArtifactName: 'drop'
+#    publishLocation: 'Container'
+
+
+- script: pwd
+  displayName: 'Print your current folder'
+
+
+#- script: docker build -t poc -f devops/Dockerfile .
+#  displayName: 'Build docker image'
+
+
+
+#- script: |
+#    echo "Listing contents of $(Build.ArtifactStagingDirectory)/poc"
+#    ls -R $(Build.ArtifactStagingDirectory)/poc
+#    displayName: 'Verify Artifact Output Directory'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifacts'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
+- task: DownloadBuildArtifacts@0
+  displayName: 'Download Artifacts'
+  inputs:
+    buildType: 'current'
+    downloadType: 'single'
+    artifactName: 'drop'
+    downloadPath: '$(Build.ArtifactStagingDirectory)/drop'
+
+- script: |
+    echo "Listing downloaded artifacts"
+    ls -R $(Build.ArtifactStagingDirectory)/drop
+  displayName: 'List Downloaded Artifacts'
+
+    # Step 3: Build Docker Image
+- task: Docker@2
+  displayName: 'Build Docker Image'
+  inputs:
+    command: 'build'
+    Dockerfile: 'devops/Dockerfile'  # Adjust the path to your Dockerfile
+    tags: |
+      $(imageName):$(tag)  # Tagging with the build ID or any other versioning mechanism
+    buildContext: '$(Build.ArtifactStagingDirectory)/drop'
+
+# Step 4: Verify Docker Image Build
+- script: |
+    echo "Docker image $(imageName):$(tag) built successfully"
+  displayName: 'Verify Docker Image Build'
+
+#- script: |
+#    echo "Image $(acrRegistry)/$(imageName):$(tag) pushed to ACR"
+#  displayName: 'Verify Docker Image Push'
