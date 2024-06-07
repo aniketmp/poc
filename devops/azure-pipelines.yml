@@ -32,9 +32,9 @@ steps:
   displayName: 'Change the directory'
 
 
-- script: echo pwd
+- script: pwd
   displayName: 'Print the current directory'
-  
+
 - task: Docker@2
   displayName: Build an image
   inputs:
