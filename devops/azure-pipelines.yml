@@ -28,6 +28,10 @@ steps:
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'clean package'
 
+- script: cd $(Agent.BuildDirectory)
+  displayName: 'Change the directory'
+
+
 - task: Docker@2
   displayName: Build an image
   inputs:
