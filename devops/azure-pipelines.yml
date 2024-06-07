@@ -28,31 +28,12 @@ steps:
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'clean package'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifacts'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/target'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-
-- task: DownloadBuildArtifacts@0
-  displayName: 'Download Artifacts'
-  inputs:
-    buildType: 'current'
-    downloadType: 'single'
-    artifactName: 'drop'
-    downloadPath: '$(System.ArtifactsDirectory)'
-
-- script: |
-    echo "Listing downloaded artifacts"
-    ls -R $(System.ArtifactsDirectory)
-  displayName: 'List Downloaded Artifacts'
-
 - task: Docker@2
   displayName: Build an image
   inputs:
     repository: $(imageName)
     command: build
     Dockerfile: devops/Dockerfile
+    buildContext: '$(Agent.BuildDirectory)'
 
 
