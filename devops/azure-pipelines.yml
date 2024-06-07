@@ -32,10 +32,14 @@ steps:
   displayName: 'Change the directory'
 
 
+- script: echo pwd
+  displayName: 'Print the current directory'
+  
 - task: Docker@2
   displayName: Build an image
   inputs:
     repository: $(imageName)
     command: build
     Dockerfile: devops/Dockerfile
+
 
