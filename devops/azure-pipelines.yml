@@ -41,7 +41,7 @@ steps:
 - script: |
     echo "Printing directory tree"
     sudo apt-get update && sudo apt-get install -y tree
-    tree $(Build.ArtifactStagingDirectory)/drop
+    tree $(Build.ArtifactStagingDirectory)
     displayName: 'Print Directory Tree'
 
 - task: Docker@2
