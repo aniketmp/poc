@@ -12,6 +12,7 @@ pool:
 
 variables:
   imageName: 'poc'
+  tag: '08-06-2024'
   acrRegistry: 'mypocregistry123.azurecr.io'
 
 steps:
@@ -76,16 +77,20 @@ steps:
     ls -R $(Build.ArtifactStagingDirectory)/drop
   displayName: 'List Downloaded Artifacts'
 
+    # Step 3: Build Docker Image
 - task: Docker@2
-  displayName: 'Build and Push Docker Image'
+  displayName: 'Build Docker Image'
   inputs:
-    containerRegistry: '$(acrRegistry)'  # ACR login server
-    repository: '$(imageName)'  # Image name in ACR
-    command: 'buildAndPush'
+    command: 'build'
     Dockerfile: 'devops/Dockerfile'  # Adjust the path to your Dockerfile
     tags: |
-      $(tag)  # Tagging with the build ID or any other versioning mechanism
+      $(imageName):$(tag)  # Tagging with the build ID or any other versioning mechanism
     buildContext: '$(Build.ArtifactStagingDirectory)/drop'
+
+# Step 4: Verify Docker Image Build
+- script: |
+    echo "Docker image $(imageName):$(tag) built successfully"
+  displayName: 'Verify Docker Image Build'
 
 #- script: |
 #    echo "Image $(acrRegistry)/$(imageName):$(tag) pushed to ACR"
