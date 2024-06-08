@@ -40,12 +40,7 @@ steps:
 
 - script: pwd
   displayName: 'Print your current folder'
-#
-#- script: ls
-#  displayName: 'List contents'
 
-#- script: ls target
-#  displayName: 'List contents of target'
 
 #- script: docker build -t poc -f devops/Dockerfile .
 #  displayName: 'Build docker image'
