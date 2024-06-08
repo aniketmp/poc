@@ -12,7 +12,7 @@ pool:
 
 variables:
   imageName: 'poc'
-  acrRegistry: 'mypocregistry123'
+  acrRegistry: 'mypocregistry123.azurecr.io'
 
 steps:
 - script: echo Hello, world!
