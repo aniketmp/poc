@@ -82,7 +82,7 @@ steps:
     containerRegistry: '$(acrRegistry)'  # ACR login server
     repository: '$(imageName)'  # Image name in ACR
     command: 'buildAndPush'
-    Dockerfile: 'path/to/your/Dockerfile'  # Adjust the path to your Dockerfile
+    Dockerfile: 'devops/Dockerfile'  # Adjust the path to your Dockerfile
     tags: |
       $(tag)  # Tagging with the build ID or any other versioning mechanism
     buildContext: '$(Build.ArtifactStagingDirectory)/drop'
