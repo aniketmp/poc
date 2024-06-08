@@ -27,12 +27,13 @@ steps:
     publishJUnitResults: false
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'clean package'
+    options: '-DoutputDirectory=$(Build.ArtifactStagingDirectory)/poc'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+#- task: PublishBuildArtifacts@1
+#  inputs:
+#    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#    ArtifactName: 'drop'
+#    publishLocation: 'Container'
 
 
 - script: pwd
@@ -41,11 +42,50 @@ steps:
 - script: ls
   displayName: 'List contents'
 
-- script: ls target
-  displayName: 'List contents of target'
+#- script: ls target
+#  displayName: 'List contents of target'
 
-- script: docker build -t poc -f devops/Dockerfile .
-  displayName: 'Build docker image'
+#- script: docker build -t poc -f devops/Dockerfile .
+#  displayName: 'Build docker image'
 
 
 
+- script: |
+    echo "Listing contents of $(Build.ArtifactStagingDirectory)/poc"
+    ls -R $(Build.ArtifactStagingDirectory)/poc
+    displayName: 'Verify Artifact Output Directory'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifacts'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/poc'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
+- task: DownloadBuildArtifacts@0
+  displayName: 'Download Artifacts'
+  inputs:
+    buildType: 'current'
+    downloadType: 'single'
+    artifactName: 'drop'
+    downloadPath: '$(Build.ArtifactStagingDirectory)/drop'
+
+- script: |
+    echo "Listing downloaded artifacts"
+    ls -R $(Build.ArtifactStagingDirectory)/drop
+  displayName: 'List Downloaded Artifacts'
+
+- task: Docker@2
+  displayName: 'Build and Push Docker Image'
+  inputs:
+    containerRegistry: '$(acrRegistry)'  # ACR login server
+    repository: '$(imageName)'  # Image name in ACR
+    command: 'buildAndPush'
+    Dockerfile: 'path/to/your/Dockerfile'  # Adjust the path to your Dockerfile
+    tags: |
+      $(tag)  # Tagging with the build ID or any other versioning mechanism
+    buildContext: '$(Build.ArtifactStagingDirectory)/drop'
+
+- script: |
+    echo "Image $(acrRegistry)/$(imageName):$(tag) pushed to ACR"
+  displayName: 'Verify Docker Image Push'
