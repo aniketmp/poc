@@ -44,11 +44,8 @@ steps:
 - script: ls target
   displayName: 'List contents of target'
 
-- task: Docker@2
-  displayName: Build an image
-  inputs:
-    repository: $(imageName)
-    command: build
-    Dockerfile: devops/Dockerfile
-    buildContext: '$(Build.ArtifactStagingDirectory)'
+- script: docker build -t poc -f devops/Dockerfile .
+  displayName: 'Build docker image'
+
+
 
