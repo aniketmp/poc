@@ -39,8 +39,16 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
-- script: locate poc.jar
-  displayName: 'Locate artifact'
+- script: |
+    echo "Installing mlocate and updating the database"
+    sudo apt-get update
+    sudo apt-get install -y mlocate
+    sudo updatedb
+    echo "Locating the file"
+    locate poc.jar
+    displayName: 'Locate File'
+
+   
 
 - script: pwd
   displayName: 'Print your current folder'
