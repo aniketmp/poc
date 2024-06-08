@@ -28,6 +28,29 @@ steps:
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'clean package'
 
+- task: CopyFiles@2
+  inputs:
+    Contents: '**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
+- script: locate poc.jar
+  displayName: 'Locate artifact'
+
+- script: pwd
+  displayName: 'Print your current folder'
+
+- script: |
+    echo "Printing directory tree"
+    sudo apt-get update && sudo apt-get install -y tree
+    tree $(Build.ArtifactStagingDirectory)/drop
+    displayName: 'Print Directory Tree'
+
 - task: Docker@2
   displayName: Build an image
   inputs:
@@ -35,5 +58,4 @@ steps:
     command: build
     Dockerfile: devops/Dockerfile
     buildContext: '$(Agent.BuildDirectory)'
-
 
