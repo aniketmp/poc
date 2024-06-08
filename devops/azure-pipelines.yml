@@ -87,6 +87,6 @@ steps:
       $(tag)  # Tagging with the build ID or any other versioning mechanism
     buildContext: '$(Build.ArtifactStagingDirectory)/drop'
 
-- script: |
-    echo "Image $(acrRegistry)/$(imageName):$(tag) pushed to ACR"
-  displayName: 'Verify Docker Image Push'
+#- script: |
+#    echo "Image $(acrRegistry)/$(imageName):$(tag) pushed to ACR"
+#  displayName: 'Verify Docker Image Push'
