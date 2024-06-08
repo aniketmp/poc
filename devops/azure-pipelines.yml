@@ -40,9 +40,9 @@ steps:
 
 - script: pwd
   displayName: 'Print your current folder'
-
-- script: ls
-  displayName: 'List contents'
+#
+#- script: ls
+#  displayName: 'List contents'
 
 #- script: ls target
 #  displayName: 'List contents of target'
