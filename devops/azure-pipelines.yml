@@ -29,7 +29,6 @@ steps:
     publishJUnitResults: false
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'clean package'
-    options: '-DoutputDirectory=$(Build.ArtifactStagingDirectory)/poc'
 
 #- task: PublishBuildArtifacts@1
 #  inputs:
@@ -55,7 +54,7 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifacts'
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/poc'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
